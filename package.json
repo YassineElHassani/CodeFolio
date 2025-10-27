@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "CodeFolio is a modern, and easy-to-maintain backend to power their personal portfolio, Build with a robust and secure GraphQL API that manages all portfolio data: personal profile, projects, skills, and experiences.",
   "main": "dist/index.js",
+  
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc",
