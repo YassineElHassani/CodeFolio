@@ -1,0 +1,20 @@
+# This file tells Docker to ignore these files/folders
+# when building the image. This speeds up the build
+# and keeps the image clean.
+
+# Ignore local dependencies (they are installed in the container)
+node_modules
+
+# Ignore the build output folder (it's created *in* the container)
+dist
+
+# Ignore the .env file (secrets are passed via 'environment' in docker-compose)
+.env
+
+# Ignore Git files
+.git
+.gitignore
+
+# Ignore Docker files
+Dockerfile
+docker-compose.yml

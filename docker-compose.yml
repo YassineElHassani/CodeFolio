@@ -1,0 +1,59 @@
+# This file is for orchestrating your DEVELOPMENT environment.
+# It will run your API and a MongoDB database in separate containers.
+
+version: '3.8'
+
+services:
+  # 1. The API Service (Your Node.js App)
+  api:
+    # We use a base Node image. We don't use the Dockerfile here
+    # because we want to run 'npm install' and 'npm run dev'
+    # inside the container with our code mounted.
+    image: node:20-alpine
+    container_name: codefolio_api_dev
+    
+    # Command to run on startup.
+    # Installs dependencies (if needed) and starts the dev server.
+    command: sh -c "npm install && npm run dev"
+    
+    # Set the working directory
+    working_dir: /usr/src/app
+    
+    # Mount your local code directory into the container's working directory
+    volumes:
+      - .:/usr/src/app
+    
+    # Map port 4000 on your local machine to port 4000 in the container
+    ports:
+      - "4000:4000"
+      
+    # Environment variables for the API
+    environment:
+      - PORT=4000
+      - JWT_SECRET=your_super_secret_key_here # <-- CHANGE THIS!
+      - NODE_ENV=development
+      # This is the key: it tells Mongoose to connect to the 'db'
+      # service (defined below) on the default mongo port.
+      - MONGO_URI=mongodb://db:27017/codefolio
+      
+    # Make sure the 'db' service starts before this 'api' service
+    depends_on:
+      - db
+
+  # 2. The Database Service (MongoDB)
+  db:
+    image: mongo:latest
+    container_name: codefolio_db
+    
+    # Map the default MongoDB port to your local machine
+    ports:
+      - "27017:27017"
+      
+    # This mounts a "named volume" to persist your database data.
+    # If you stop/remove the container, your data won't be lost.
+    volumes:
+      - mongo-data:/data/db
+
+# Define the named volume for data persistence
+volumes:
+  mongo-data: {}
