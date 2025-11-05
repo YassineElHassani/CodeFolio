@@ -18,11 +18,19 @@ const resolvers = {
       const projects = await Project.find().sort({ createdAt: -1 }).lean();
       const skills = await Skill.find().sort({ name: 1 }).lean();
       const experiences = await Experience.find().sort({ startDate: -1 }).lean();
-      return { profile, projects, skills, experiences };
+      return {
+        profile: profile ? formatDoc(profile) : null,
+        projects: projects.map(formatDoc),
+        skills: skills.map(formatDoc),
+        experiences: experiences.map(formatDoc)
+      };
     },
 
     // Get profile
-    getProfile: async () => Profile.findOne().lean(),
+    getProfile: async () => {
+      const profile = await Profile.findOne().lean();
+      return profile ? formatDoc(profile) : null;
+    },
 
     // Get projects
     getProjects: async () => {

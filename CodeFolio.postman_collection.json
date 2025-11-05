@@ -21,7 +21,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"query\":\"mutation Login($username: String!, $password: String!) {\\n  login(username: $username, password: $password) {\\n    token\\n  }\\n}\",\"variables\":{\"username\":\"admin\",\"password\":\"your_password\"}}"
+							"raw": "{\"query\":\"mutation Login($username: String!, $password: String!) {\\n  login(username: $username, password: $password) {\\n    token\\n  }\\n}\",\"variables\":{\"username\":\"admin\",\"password\":\"admin123\"}}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/graphql",
