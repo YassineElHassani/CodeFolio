@@ -1,0 +1,486 @@
+{
+	"info": {
+		"_postman_id": "random-uuid",
+		"name": "CodeFolio API",
+		"description": "GraphQL API collection for CodeFolio portfolio management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"mutation Login($username: String!, $password: String!) {\\n  login(username: $username, password: $password) {\\n    token\\n  }\\n}\",\"variables\":{\"username\":\"admin\",\"password\":\"your_password\"}}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": ["{{baseUrl}}"],
+							"path": ["graphql"]
+						},
+						"description": "Login to get authentication token"
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"mutation {\\n  logout\\n}\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": ["{{baseUrl}}"],
+							"path": ["graphql"]
+						},
+						"description": "Logout current user"
+					}
+				}
+			]
+		},
+		{
+			"name": "Portfolio",
+			"item": [
+				{
+					"name": "Get Full Portfolio",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"query {\\n  getPortfolio {\\n    profile {\\n      id\\n      name\\n      title\\n      bio\\n      avatarUrl\\n      social {\\n        platform\\n        icon\\n        url\\n      }\\n    }\\n    projects {\\n      id\\n      title\\n      description\\n      skills\\n      url\\n      image\\n    }\\n    skills {\\n      id\\n      name\\n      level\\n      icon\\n    }\\n    experiences {\\n      id\\n      company\\n      role\\n      startDate\\n      endDate\\n      details\\n    }\\n  }\\n}\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": ["{{baseUrl}}"],
+							"path": ["graphql"]
+						},
+						"description": "Get complete portfolio data"
+					}
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"query {\\n  getProfile {\\n    id\\n    name\\n    title\\n    bio\\n    avatarUrl\\n    social {\\n      platform\\n      icon\\n      url\\n    }\\n  }\\n}\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": ["{{baseUrl}}"],
+							"path": ["graphql"]
+						},
+						"description": "Get user profile information"
+					}
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"mutation UpdateProfile($input: ProfileInput!) {\\n  updateProfile(input: $input) {\\n    id\\n    name\\n    title\\n    bio\\n    avatarUrl\\n    social {\\n      platform\\n      icon\\n      url\\n    }\\n  }\\n}\",\"variables\":{\"input\":{\"name\":\"John Doe\",\"title\":\"Full Stack Developer\",\"bio\":\"Experienced developer...\",\"avatarUrl\":\"https://example.com/avatar.jpg\",\"social\":[{\"platform\":\"GitHub\",\"icon\":\"github\",\"url\":\"https://github.com/johndoe\"}]}}}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": ["{{baseUrl}}"],
+							"path": ["graphql"]
+						},
+						"description": "Update user profile"
+					}
+				}
+			]
+		},
+		{
+			"name": "Projects",
+			"item": [
+				{
+					"name": "Get Projects",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"query {\\n  getProjects {\\n    id\\n    title\\n    description\\n    skills\\n    url\\n    image\\n  }\\n}\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": ["{{baseUrl}}"],
+							"path": ["graphql"]
+						},
+						"description": "Get all projects"
+					}
+				},
+				{
+					"name": "Create Project",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"mutation CreateProject($input: ProjectInput!) {\\n  createProject(input: $input) {\\n    id\\n    title\\n    description\\n    skills\\n    url\\n    image\\n  }\\n}\",\"variables\":{\"input\":{\"title\":\"My Project\",\"description\":\"Project description\",\"skills\":[\"React\",\"Node.js\"],\"url\":\"https://project.com\",\"image\":\"https://project.com/image.jpg\"}}}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": ["{{baseUrl}}"],
+							"path": ["graphql"]
+						},
+						"description": "Create a new project"
+					}
+				},
+				{
+					"name": "Update Project",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"mutation UpdateProject($id: ID!, $input: ProjectInput!) {\\n  updateProject(id: $id, input: $input) {\\n    id\\n    title\\n    description\\n    skills\\n    url\\n    image\\n  }\\n}\",\"variables\":{\"id\":\"project_id\",\"input\":{\"title\":\"Updated Project\",\"description\":\"Updated description\",\"skills\":[\"React\",\"Node.js\"],\"url\":\"https://project.com\",\"image\":\"https://project.com/image.jpg\"}}}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": ["{{baseUrl}}"],
+							"path": ["graphql"]
+						},
+						"description": "Update an existing project"
+					}
+				},
+				{
+					"name": "Delete Project",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"mutation DeleteProject($id: ID!) {\\n  deleteProject(id: $id)\\n}\",\"variables\":{\"id\":\"project_id\"}}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": ["{{baseUrl}}"],
+							"path": ["graphql"]
+						},
+						"description": "Delete a project"
+					}
+				}
+			]
+		},
+		{
+			"name": "Skills",
+			"item": [
+				{
+					"name": "Get Skills",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"query {\\n  getSkills {\\n    id\\n    name\\n    level\\n    icon\\n  }\\n}\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": ["{{baseUrl}}"],
+							"path": ["graphql"]
+						},
+						"description": "Get all skills"
+					}
+				},
+				{
+					"name": "Create Skill",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"mutation CreateSkill($input: SkillInput!) {\\n  createSkill(input: $input) {\\n    id\\n    name\\n    level\\n    icon\\n  }\\n}\",\"variables\":{\"input\":{\"name\":\"React\",\"level\":\"Expert\",\"icon\":\"react\"}}}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": ["{{baseUrl}}"],
+							"path": ["graphql"]
+						},
+						"description": "Create a new skill"
+					}
+				},
+				{
+					"name": "Update Skill",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"mutation UpdateSkill($id: ID!, $input: SkillInput!) {\\n  updateSkill(id: $id, input: $input) {\\n    id\\n    name\\n    level\\n    icon\\n  }\\n}\",\"variables\":{\"id\":\"skill_id\",\"input\":{\"name\":\"React\",\"level\":\"Expert\",\"icon\":\"react\"}}}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": ["{{baseUrl}}"],
+							"path": ["graphql"]
+						},
+						"description": "Update an existing skill"
+					}
+				},
+				{
+					"name": "Delete Skill",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"mutation DeleteSkill($id: ID!) {\\n  deleteSkill(id: $id)\\n}\",\"variables\":{\"id\":\"skill_id\"}}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": ["{{baseUrl}}"],
+							"path": ["graphql"]
+						},
+						"description": "Delete a skill"
+					}
+				}
+			]
+		},
+		{
+			"name": "Experiences",
+			"item": [
+				{
+					"name": "Get Experiences",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"query {\\n  getExperiences {\\n    id\\n    company\\n    role\\n    startDate\\n    endDate\\n    details\\n  }\\n}\"}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": ["{{baseUrl}}"],
+							"path": ["graphql"]
+						},
+						"description": "Get all experiences"
+					}
+				},
+				{
+					"name": "Create Experience",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"mutation CreateExperience($input: ExperienceInput!) {\\n  createExperience(input: $input) {\\n    id\\n    company\\n    role\\n    startDate\\n    endDate\\n    details\\n  }\\n}\",\"variables\":{\"input\":{\"company\":\"Company Name\",\"role\":\"Senior Developer\",\"startDate\":\"2023-01\",\"endDate\":\"2023-12\",\"details\":\"Worked on various projects...\"}}}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": ["{{baseUrl}}"],
+							"path": ["graphql"]
+						},
+						"description": "Create a new experience"
+					}
+				},
+				{
+					"name": "Update Experience",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"mutation UpdateExperience($id: ID!, $input: ExperienceInput!) {\\n  updateExperience(id: $id, input: $input) {\\n    id\\n    company\\n    role\\n    startDate\\n    endDate\\n    details\\n  }\\n}\",\"variables\":{\"id\":\"experience_id\",\"input\":{\"company\":\"Updated Company\",\"role\":\"Lead Developer\",\"startDate\":\"2023-01\",\"endDate\":\"2023-12\",\"details\":\"Updated work details...\"}}}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": ["{{baseUrl}}"],
+							"path": ["graphql"]
+						},
+						"description": "Update an existing experience"
+					}
+				},
+				{
+					"name": "Delete Experience",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"query\":\"mutation DeleteExperience($id: ID!) {\\n  deleteExperience(id: $id)\\n}\",\"variables\":{\"id\":\"experience_id\"}}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/graphql",
+							"host": ["{{baseUrl}}"],
+							"path": ["graphql"]
+						},
+						"description": "Delete an experience"
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [""]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:4000",
+			"type": "string"
+		},
+		{
+			"key": "authToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
